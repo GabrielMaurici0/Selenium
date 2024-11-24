@@ -1,10 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+import json
+
+with open('values.json', 'r') as arquivo:
+    dados = json.load(arquivo)
 
 nav = webdriver.Chrome()
 
-nav.get("https://www.moozcobranca.com.br/homologacao/servlet/hsiscobra")
+nav.get(dados['url'])
 
 time.sleep(3)
 
@@ -16,11 +20,11 @@ time.sleep(3)
 
 
 usucod.clear()
-usucod.send_keys("09541215971")
+usucod.send_keys(dados['usucod'])
 
 time.sleep(5)
 
-ususen.send_keys("S#$0#uXE)0uYq9V4m2+_")
+ususen.send_keys(dados['ususen'])
 
 # time.sleep(2)
 
