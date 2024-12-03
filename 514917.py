@@ -1,20 +1,26 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
+from selenium.webdriver.chrome.options import Options
 import time
 import json
 
-
+chrome_options = Options()
+chrome_options.add_argument("--start-maximized")
 
 #abre arquivo json
 with open('values.json', 'r') as arquivo:
     dados = json.load(arquivo)
 
 #abre o navegador
-nav = webdriver.Chrome()
+nav = webdriver.Chrome(options=chrome_options)
+
+#definir tamanho da tela
+#nav.set_window_size(1920, 1080)
 
 #criação obj ActionChains
 action = ActionChains(nav)
+
 
 #após abrir o navegador vai para a url
 nav.get(dados['url'])
@@ -75,16 +81,25 @@ for codigo in devedores:
     btndev = nav.find_element(by=By.ID, value='span__DEVCOD_0001')
     btndev.click()
 
-    time.sleep(10)
+    time.sleep(3)
+
+    btnFechar = nav.find_element(by=By.CLASS_NAME, value='btn-close')
+    if btnFechar.is_displayed():
+        print('está clicando')
+        time.sleep(2)
+        btnFechar.click()
+    else:
+        print('Não achou o botão')
+
+    time.sleep(3)
 
     try:
-        imagem = nav.find_element(By.XPATH, "//img[contains(@src, 'siscobra_topo.png')]")
-        imagem.click()
+        imagem = nav.find_element(by=By.XPATH, value="//img[contains(@src, 'siscobra_topo.png')]")
+        if imagem.is_displayed():
+            imagem.click()
     except Exception as e:
         print('imagem n encontrada')
 
-siscfg = nav.find_element(By.XPATH, "//a[contains(text(), 'Siscobra Config')]")
-action.move_to_element()
 
 time.sleep(5)
 
